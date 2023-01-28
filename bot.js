@@ -2,11 +2,21 @@ import { Client, GatewayIntentBits  } from 'discord.js';
 import *as dotenv from 'dotenv';
 
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+class Bot {
+    constructor (client) {
+        this.client = client;
 
-client.on('ready', () => {
-    console.log(`Бот вошел в сеть!`);
-});
+        this.startBot();
 
-dotenv.config();
-client.login(process.env.TOKEN);
+        dotenv.config();
+        this.client.login(process.env.TOKEN);
+    }
+
+    startBot () {
+        this.client.on('ready', () => {
+            console.log(`Бот вошел в сеть!`);
+        });
+    }
+}
+
+const bot = new Bot (new Client({ intents: [GatewayIntentBits.Guilds] }));
