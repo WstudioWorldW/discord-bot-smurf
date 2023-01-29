@@ -1,15 +1,13 @@
 import { Client, GatewayIntentBits  } from 'discord.js';
-import *as dotenv from 'dotenv';
+import { config, processStart } from './config.js';
 
 
 class Bot {
     constructor (client) {
         this.client = client;
-
+        
         this.startBot();
-
-        dotenv.config();
-        this.client.login(process.env.TOKEN);
+        this.client.login(config.token);
     }
 
     startBot () {
@@ -20,3 +18,4 @@ class Bot {
 }
 
 const bot = new Bot (new Client({ intents: [GatewayIntentBits.Guilds] }));
+
