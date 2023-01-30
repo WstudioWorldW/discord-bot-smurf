@@ -5,26 +5,43 @@ import {processStart, config} from '../config.js';
 
 
 export class Commands {
-    constructor (commandName, descripton) {
-        this.name = commandName;
-        this.descripton = descripton;
+    constructor (command) {
+        this.name = command.name;
+        this.descripton = command.description;
 
         this.regisrtrationCommands(this.name, this.descripton);
     }
 
     regisrtrationCommands (name, description) {
-        const command = new SlashCommandBuilder()
-            .setName(name)
-            .setDescription(description)
-            .toJSON()
+        if (name.length === description.length) {
+            const arrayCommands = [];
 
-        const rest = new REST({ version: 10 }).setToken(config.token);
+            for (let i = 0; i < name.length; i++) {
+                const command = new SlashCommandBuilder()
+                    .setName(name[i])
+                    .setDescription(description[i])
+                    .toJSON();
 
-        rest.put(Routes.applicationGuildCommands(config.appId, config.guildId), { body: [command] })
-            .then(() => console.log('Команды успешно зарегистрированны'))
-            .catch(console.error);
+                arrayCommands.push(command);
+            }
+    
+            const rest = new REST({ version: 10 }).setToken(config.token);
+    
+            rest.put(Routes.applicationGuildCommands(config.appId, config.guildId), { body: arrayCommands })
+                .then(() => console.log('Команды успешно зарегистрированны'))
+                .catch(console.error);
+        }
+        else {
+            console.log('У одной из комманд нет имени или описания');
+        }
     }
 }
 
-const testCommand = new Commands('test', 'test command');
-const startCommand = new Commands('start', 'start command');
+const сommands = new Commands({
+    name: ['test', 'start', 'help'],
+    description: [
+        'Test command',
+        'Start command',
+        'Help command'
+    ]
+});

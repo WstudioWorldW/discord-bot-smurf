@@ -8,4 +8,4 @@ export const config = {
     guildId: process.env.GUILDID
 }
 
-console.log(config);
+console.log('Конфиг загружен');
